@@ -1,0 +1,2405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#F2F0EA">
+  <title>Uday Mahaal — AI/ML Engineer & Developer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#F2F0EA;
+      --paper:#FDFCF9;
+      --ink:#15130F;
+      --muted:#777168;
+      --line:#D8D3C8;
+      --accent:#FF3C1E;
+      --dark:#11100E;
+      --ease:cubic-bezier(.2,.75,.2,1);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);
+      color:var(--ink);
+      font-family:'Inter',sans-serif;
+      overflow-x:hidden;
+      cursor:none;
+    }
+    body.menu-open{overflow:hidden}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    img{display:block;max-width:100%}
+    ::selection{background:var(--accent);color:var(--paper)}
+
+    .wrap{
+      width:min(1380px,100%);
+      margin:auto;
+      padding:0 48px;
+    }
+
+
+
+    /* UNIQUE INTERACTION LAYER */
+    .scroll-progress{
+      position:fixed;
+      left:0;
+      top:0;
+      width:0;
+      height:3px;
+      background:var(--accent);
+      z-index:10001;
+      transform-origin:left;
+    }
+
+    .cursor-label{
+      position:fixed;
+      z-index:10000;
+      pointer-events:none;
+      opacity:0;
+      transform:translate(-50%,-50%) scale(.7);
+      background:var(--ink);
+      color:var(--paper);
+      padding:7px 9px;
+      border-radius:100px;
+      font-size:8px;
+      font-weight:700;
+      letter-spacing:.1em;
+      transition:opacity .2s,transform .25s var(--ease);
+    }
+    .cursor-label.show{
+      opacity:1;
+      transform:translate(-50%,-50%) scale(1);
+    }
+
+    .hero-hud{
+      position:absolute;
+      right:0;
+      top:18%;
+      width:175px;
+      padding:13px 14px;
+      border:1px solid var(--line);
+      background:rgba(253,252,249,.38);
+      backdrop-filter:blur(8px);
+      z-index:7;
+      font-family:'Space Grotesk',sans-serif;
+    }
+    .hud-top{
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:8px;
+      letter-spacing:.12em;
+      margin-bottom:9px;
+    }
+    .hud-top span:last-child{color:#3F9650}
+    .hud-line{
+      height:1px;
+      background:var(--line);
+      overflow:hidden;
+      margin-bottom:11px;
+    }
+    .hud-line i{
+      display:block;
+      width:45%;
+      height:100%;
+      background:var(--accent);
+      animation:hudScan 2.4s ease-in-out infinite;
+    }
+    @keyframes hudScan{
+      0%,100%{transform:translateX(-100%)}
+      50%{transform:translateX(220%)}
+    }
+    .hud-grid{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:8px 12px;
+      font-size:8px;
+      letter-spacing:.06em;
+    }
+    .hud-grid span{color:var(--muted)}
+    .hud-grid strong{font-size:8px;font-weight:600}
+    .hud-live{color:#3F9650!important}
+
+    /* PROJECT REPOSITORY CTA */
+    .project-explore{
+      position:absolute;
+      left:50%;
+      top:50%;
+      z-index:7;
+      transform:translate(-50%,-50%) scale(.72);
+      opacity:0;
+      width:112px;
+      height:112px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      align-content:center;
+      gap:3px;
+      background:var(--accent);
+      color:var(--paper);
+      font-family:'Space Grotesk',sans-serif;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.09em;
+      text-align:center;
+      transition:opacity .45s var(--ease), transform .55s var(--ease), background .25s;
+    }
+    .project-explore span{font-size:16px}
+    .project-explore:hover{
+      background:var(--ink);
+      color:var(--paper);
+    }
+    .project:hover .project-explore{
+      opacity:1;
+      transform:translate(-50%,-50%) scale(1);
+    }
+
+    /* COMMAND PALETTE */
+    .command-backdrop{
+      position:fixed;
+      inset:0;
+      z-index:9500;
+      background:rgba(21,19,15,.32);
+      backdrop-filter:blur(8px);
+      opacity:0;
+      visibility:hidden;
+      transition:.3s;
+    }
+    .command-backdrop.open{
+      opacity:1;
+      visibility:visible;
+    }
+    .command-palette{
+      position:fixed;
+      z-index:9600;
+      left:50%;
+      top:50%;
+      width:min(620px,calc(100% - 32px));
+      transform:translate(-50%,-46%) scale(.96);
+      background:var(--paper);
+      border:1px solid var(--line);
+      box-shadow:0 30px 100px rgba(0,0,0,.2);
+      opacity:0;
+      visibility:hidden;
+      transition:.35s var(--ease);
+    }
+    .command-palette.open{
+      opacity:1;
+      visibility:visible;
+      transform:translate(-50%,-50%) scale(1);
+    }
+    .command-head{
+      display:flex;
+      justify-content:space-between;
+      padding:17px 20px;
+      border-bottom:1px solid var(--line);
+      color:var(--muted);
+      font-size:9px;
+      font-weight:700;
+      letter-spacing:.12em;
+    }
+    #command-close{
+      border:1px solid var(--line);
+      background:transparent;
+      color:var(--muted);
+      padding:4px 7px;
+      font-size:8px;
+      cursor:pointer;
+    }
+    .command-search{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:18px 20px;
+      border-bottom:1px solid var(--line);
+    }
+    .command-search > span{
+      color:var(--accent);
+      font-family:'Space Grotesk',sans-serif;
+      font-size:18px;
+      font-weight:700;
+    }
+    #command-input{
+      width:100%;
+      border:0;
+      outline:0;
+      background:transparent;
+      color:var(--ink);
+      font-family:'Space Grotesk',sans-serif;
+      font-size:20px;
+      letter-spacing:-.03em;
+    }
+    #command-input::placeholder{color:#AAA49A}
+    .command-items{
+      padding:8px;
+      max-height:360px;
+      overflow:auto;
+    }
+    .command-items a{
+      display:flex;
+      justify-content:space-between;
+      padding:14px 13px;
+      font-size:13px;
+      border-bottom:1px solid transparent;
+      transition:.2s;
+    }
+    .command-items a:hover,
+    .command-items a.active{
+      background:var(--ink);
+      color:var(--paper);
+    }
+    .command-items a span{color:var(--muted)}
+    .command-items a:hover span,
+    .command-items a.active span{color:var(--accent)}
+    .command-foot{
+      display:flex;
+      justify-content:flex-end;
+      gap:7px;
+      align-items:center;
+      padding:12px 20px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:9px;
+    }
+    .command-foot kbd{
+      border:1px solid var(--line);
+      padding:3px 6px;
+      color:var(--ink);
+      background:var(--bg);
+    }
+
+    /* BUILD STATUS */
+    .build-status{
+      margin-top:48px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      width:min(760px,100%);
+      padding:15px 17px;
+      border:1px solid rgba(253,252,249,.13);
+      background:rgba(253,252,249,.025);
+    }
+    .build-pulse{
+      width:8px;
+      height:8px;
+      flex:0 0 8px;
+      border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 5px rgba(255,60,30,.08);
+      animation:livePulse 1.8s infinite;
+    }
+    .build-status div{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .build-status small{
+      color:#8E8980;
+      font-size:8px;
+      letter-spacing:.13em;
+    }
+    .build-status strong{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:12px;
+      font-weight:500;
+      letter-spacing:-.02em;
+    }
+    .build-arrow{
+      margin-left:auto;
+      color:var(--accent);
+      font-size:18px;
+    }
+
+    /* More distinctive project interaction */
+    .project-media{
+      isolation:isolate;
+    }
+    .project-media::after{
+      content:"EXPLORE ↗";
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%) scale(.7);
+      opacity:0;
+      z-index:5;
+      padding:13px 17px;
+      border-radius:100px;
+      background:var(--accent);
+      color:var(--paper);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.1em;
+      transition:.45s var(--ease);
+      pointer-events:none;
+    }
+    .project:hover .project-media::after{
+      opacity:1;
+      transform:translate(-50%,-50%) scale(1);
+    }
+
+    @media(max-width:1050px){
+      .hero-hud{right:0;top:22%}
+    }
+
+    @media(max-width:760px){
+      .hero-hud{
+        top:20%;
+        right:0;
+        width:150px;
+        transform:scale(.9);
+        transform-origin:right top;
+      }
+    }
+
+    /* CURSOR */
+    #cursor-dot{
+      position:fixed;
+      width:7px;height:7px;
+      border-radius:50%;
+      background:var(--accent);
+      pointer-events:none;
+      z-index:9999;
+      transform:translate(-50%,-50%);
+    }
+    #cursor-ring{
+      position:fixed;
+      width:34px;height:34px;
+      border:1px solid rgba(21,19,15,.5);
+      border-radius:50%;
+      pointer-events:none;
+      z-index:9998;
+      transform:translate(-50%,-50%);
+      transition:width .35s var(--ease),height .35s var(--ease),border-color .35s,background .35s;
+    }
+    #cursor-ring.hover{
+      width:58px;height:58px;
+      border-color:var(--accent);
+      background:rgba(255,60,30,.04);
+    }
+
+    /* NAV */
+    header{
+      position:fixed;
+      inset:0 0 auto;
+      z-index:900;
+      padding:20px 48px;
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      background:rgba(242,240,234,.58);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      border-bottom:1px solid transparent;
+      transition:.4s var(--ease);
+    }
+    header.scrolled{
+      background:rgba(242,240,234,.9);
+      border-bottom-color:var(--line);
+    }
+    .brand{
+      width:max-content;
+      display:flex;
+      flex-direction:column;
+      gap:1px;
+    }
+    .brand-name{
+      font-family:'Space Grotesk',sans-serif;
+      font-weight:700;
+      font-size:15px;
+      letter-spacing:-.03em;
+    }
+    .brand-role{
+      color:var(--muted);
+      font-size:9px;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+    }
+    .nav-links{
+      display:flex;
+      gap:42px;
+      align-items:center;
+      font-size:14px;
+      font-weight:600;
+      letter-spacing:-.02em;
+    }
+    .nav-links a{
+      position:relative;
+      padding:4px 0;
+    }
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:0;bottom:0;
+      width:0;height:1px;
+      background:var(--accent);
+      transition:width .3s var(--ease);
+    }
+    .nav-links a:hover::after{width:100%}
+    .nav-right{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:17px;
+    }
+    .availability{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--muted);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .live-dot{
+      width:7px;height:7px;
+      border-radius:50%;
+      background:#45A758;
+      box-shadow:0 0 0 4px rgba(69,167,88,.12);
+      animation:livePulse 2s infinite;
+    }
+    @keyframes livePulse{
+      0%,100%{transform:scale(1);opacity:1}
+      50%{transform:scale(.7);opacity:.55}
+    }
+    .talk{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      padding:10px 18px;
+      background:var(--ink);
+      color:var(--paper);
+      border-radius:100px;
+      font-size:11px;
+      font-weight:700;
+      transition:.3s;
+    }
+    .talk:hover{background:var(--accent)}
+    .menu-btn{display:none;border:0;background:none;font-weight:700;cursor:pointer}
+    .mobile-menu{
+      position:fixed;
+      inset:0;
+      z-index:850;
+      background:var(--bg);
+      padding:100px 24px 30px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      opacity:0;
+      visibility:hidden;
+      transform:translateY(-18px);
+      transition:.4s var(--ease);
+    }
+    .mobile-menu.open{
+      opacity:1;
+      visibility:visible;
+      transform:none;
+    }
+    .mobile-menu a{
+      font-family:'Anton',sans-serif;
+      font-size:clamp(46px,13vw,80px);
+      line-height:.98;
+      text-transform:uppercase;
+      border-bottom:1px solid var(--line);
+      padding:12px 0;
+    }
+
+    /* HERO */
+    #home{
+      min-height:100svh;
+      position:relative;
+      display:flex;
+      align-items:center;
+      overflow:hidden;
+      padding:105px 0 50px;
+    }
+    .hero-grid{
+      position:relative;
+      width:100%;
+      max-width:100%;
+      min-height:calc(100svh - 155px);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+    .hero-eyebrow{
+      position:absolute;
+      top:2%;
+      left:0;
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      z-index:5;
+    }
+    .hero-location{
+      position:absolute;
+      top:2%;
+      right:0;
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      z-index:5;
+    }
+    .hero-name{
+      position:absolute;
+      z-index:5;
+      top:8%;
+      left:0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      width:100%;
+      max-width:100%;
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(78px,11.8vw,190px);
+      line-height:.78;
+      letter-spacing:-.012em;
+      text-transform:uppercase;
+      pointer-events:none;
+      white-space:nowrap;
+    }
+    .hero-name span{
+      display:block;
+      flex:0 0 auto;
+      overflow:hidden;
+      white-space:nowrap;
+    }
+    .hero-name em{
+      display:block;
+      font-style:normal;
+      transform:translateY(115%);
+    }
+    .hero-name .first{color:var(--accent);text-align:right}
+    .hero-name .last{
+      color:var(--ink);
+      text-align:left;
+      margin-left:.01em;
+    }
+    .hero-photo-stage{
+      position:absolute;
+      z-index:3;
+      left:50%;
+      bottom:-1px;
+      width:min(500px,40vw);
+      height:min(650px,72vh);
+      transform:translateX(-50%);
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      pointer-events:auto;
+      opacity:1;
+    }
+    .hero-photo-stage::before{
+      content:"";
+      position:absolute;
+      width:72%;
+      aspect-ratio:1;
+      bottom:8%;
+      border-radius:50%;
+      background:rgba(255,60,30,.055);
+      filter:blur(2px);
+      z-index:-1;
+    }
+    .hero-photo-stage::after{
+      content:"";
+      position:absolute;
+      left:12%;
+      right:12%;
+      bottom:1px;
+      height:2px;
+      background:var(--accent);
+      transform:scaleX(var(--line-scale,0));
+      transform-origin:center;
+    }
+    .hero-photo-wrap{
+      position:relative;
+      width:100%;
+      height:100%;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      transform:translateY(35px) scale(.96);
+      will-change:transform;
+      transform-origin:center bottom;
+      perspective:1000px;
+      overflow:visible;
+    }
+    .hero-photo{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      object-position:center bottom;
+      filter:contrast(1.035) saturate(.98);
+      position:relative;
+      transform:translate3d(0,0,0);
+      opacity:0;
+      will-change:transform,filter;
+      backface-visibility:hidden;
+    }
+    /* Natural-looking movement: light, depth and tiny camera drift rather than cartoon animation. */
+    .hero-light-sweep{
+      position:absolute;
+      top:-8%;
+      left:-35%;
+      width:34%;
+      height:116%;
+      pointer-events:none;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);
+      filter:blur(12px);
+      opacity:0;
+      transform:skewX(-12deg);
+      mix-blend-mode:screen;
+      z-index:2;
+      animation:heroLightSweep 7s cubic-bezier(.35,.05,.25,1) infinite;
+    }
+    .hero-glass{
+      position:absolute;
+      inset:4% 7% 1% 7%;
+      pointer-events:none;
+      border-radius:45% 45% 12% 12%;
+      background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.055),transparent 42%);
+      opacity:.55;
+      mix-blend-mode:soft-light;
+      z-index:3;
+    }
+    @keyframes heroLightSweep{
+      0%,55%{left:-38%;opacity:0}
+      61%{opacity:.32}
+      70%{left:105%;opacity:0}
+      100%{left:105%;opacity:0}
+    }
+    .hero-photo-stage::before{
+      animation:heroHalo 6s ease-in-out infinite;
+    }
+    @keyframes heroHalo{
+      0%,100%{transform:scale(.96);opacity:.7}
+      50%{transform:scale(1.04);opacity:1}
+    }
+    .hero-orbit{
+      position:absolute;
+      width:62px;height:62px;
+      border:1px solid var(--line);
+      border-radius:50%;
+      right:3%;
+      top:28%;
+      display:grid;
+      place-items:center;
+      z-index:5;
+      opacity:0;
+    }
+    .hero-orbit::before{
+      content:"";
+      width:7px;height:7px;
+      border-radius:50%;
+      background:var(--accent);
+    }
+    .hero-bottom{
+      position:absolute;
+      left:0;right:0;
+      bottom:0;
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:end;
+      gap:30px;
+      z-index:6;
+    }
+    .hero-role h2{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:23px;
+      font-weight:700;
+      letter-spacing:-.045em;
+      margin-bottom:11px;
+    }
+    .hero-role p{
+      max-width:470px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.75;
+    }
+    .hero-scroll{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:9px;
+      color:var(--muted);
+      font-size:9px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+    }
+    .scroll-line{
+      width:1px;height:48px;
+      background:var(--ink);
+      transform-origin:top;
+      animation:scrollLine 1.7s infinite;
+    }
+    @keyframes scrollLine{
+      0%{transform:scaleY(0);transform-origin:top}
+      45%{transform:scaleY(1);transform-origin:top}
+      55%{transform:scaleY(1);transform-origin:bottom}
+      100%{transform:scaleY(0);transform-origin:bottom}
+    }
+    .hero-socials{
+      display:flex;
+      justify-content:flex-end;
+      gap:18px;
+      flex-wrap:wrap;
+      font-size:12px;
+      font-weight:600;
+    }
+    .hero-socials a{color:var(--muted);transition:.25s}
+    .hero-socials a:hover{color:var(--accent);transform:translateY(-2px)}
+
+    /* TICKER */
+    .ticker{
+      overflow:hidden;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      white-space:nowrap;
+      background:var(--paper);
+    }
+    .ticker-track{
+      width:max-content;
+      display:flex;
+      align-items:center;
+      animation:tickerMove 22s linear infinite;
+    }
+    .ticker-item{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      padding:18px 28px;
+      font-family:'Space Grotesk',sans-serif;
+      font-size:12px;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .ticker-item i{
+      width:5px;height:5px;
+      border-radius:50%;
+      background:var(--accent);
+    }
+    @keyframes tickerMove{
+      to{transform:translateX(-50%)}
+    }
+
+    /* MANIFESTO */
+    #manifesto{padding:210px 0}
+    .manifesto-meta{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:52px;
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .manifesto-text{
+      max-width:1260px;
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(44px,6.8vw,94px);
+      font-weight:700;
+      line-height:.98;
+      letter-spacing:-.06em;
+      text-transform:uppercase;
+    }
+    .manifesto-text .word{
+      display:inline-block;
+      opacity:.12;
+      transform:translateY(8px);
+      margin-right:.16em;
+    }
+    .manifesto-text .accent{color:var(--accent)}
+
+    /* ABOUT */
+    #about{
+      padding:150px 0 180px;
+      border-top:1px solid var(--line);
+    }
+    .section-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:55px;
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .section-top strong{color:var(--accent);font-weight:700}
+    .about-heading{
+      max-width:1180px;
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(50px,7vw,98px);
+      font-weight:700;
+      line-height:.88;
+      letter-spacing:-.07em;
+      text-transform:uppercase;
+      margin-bottom:90px;
+    }
+    .about-heading .muted-part{color:var(--muted)}
+    .about-grid{
+      display:grid;
+      grid-template-columns:minmax(320px,.82fr) minmax(380px,1.18fr);
+      gap:95px;
+      align-items:start;
+    }
+    .about-visual{
+      position:relative;
+      width:100%;
+      max-width:510px;
+      aspect-ratio:4/5;
+      overflow:hidden;
+      background:var(--paper);
+    }
+    .about-visual img{
+      width:100%;height:100%;
+      object-fit:cover;
+      object-position:center;
+      transition:transform 1s var(--ease);
+    }
+    .about-visual:hover img{transform:scale(1.04)}
+    .about-visual .visual-number{
+      position:absolute;
+      top:18px;left:18px;
+      font-family:'Space Grotesk',sans-serif;
+      font-size:10px;
+      font-weight:700;
+      color:var(--paper);
+      background:var(--ink);
+      padding:7px 9px;
+      letter-spacing:.08em;
+    }
+    .about-visual .visual-line{
+      position:absolute;
+      left:0;bottom:0;
+      width:48%;
+      height:3px;
+      background:var(--accent);
+    }
+    .about-copy{padding-top:4px}
+    .about-intro{
+      max-width:600px;
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(22px,2.4vw,33px);
+      font-weight:500;
+      line-height:1.12;
+      letter-spacing:-.04em;
+      margin-bottom:38px;
+    }
+    .about-copy p{
+      max-width:650px;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.85;
+      margin-bottom:23px;
+    }
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:35px;
+    }
+    .chip{
+      padding:8px 13px;
+      border:1px solid var(--line);
+      border-radius:100px;
+      background:var(--paper);
+      font-size:10.5px;
+      font-weight:500;
+      transition:.25s;
+    }
+    .chip:hover{
+      border-color:var(--ink);
+      transform:translateY(-2px);
+    }
+
+    /* WORK */
+    #work{
+      padding:150px 0 100px;
+      border-top:1px solid var(--line);
+    }
+    .work-heading{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:30px;
+      margin-bottom:100px;
+    }
+    .work-heading h2{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(55px,8vw,110px);
+      font-weight:700;
+      line-height:.82;
+      letter-spacing:-.075em;
+      text-transform:uppercase;
+    }
+    .work-heading p{
+      max-width:330px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+    .project{
+      position:relative;
+      margin-bottom:150px;
+    }
+    .project:last-child{margin-bottom:30px}
+    .project-media{
+      position:relative;
+      width:100%;
+      height:min(72vh,760px);
+      min-height:420px;
+      overflow:hidden;
+      background:var(--paper);
+    }
+    .project-media img{
+      width:100%;height:100%;
+      object-fit:cover;
+      transform:scale(1.035);
+      transition:transform 1.2s var(--ease);
+      will-change:transform;
+    }
+    .project:hover .project-media img{transform:scale(1.075)}
+    .project-overlay{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:linear-gradient(180deg,rgba(0,0,0,.04),transparent 30%,rgba(0,0,0,.16));
+    }
+    .project-number{
+      position:absolute;
+      top:22px;left:22px;
+      z-index:3;
+      color:var(--paper);
+      background:var(--ink);
+      padding:10px 12px;
+      font-family:'Space Grotesk',sans-serif;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.1em;
+    }
+    .project-type{
+      position:absolute;
+      top:24px;right:24px;
+      z-index:3;
+      color:var(--paper);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+    .project-info{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:50px;
+      padding:27px 0 0;
+      align-items:start;
+    }
+    .project-title{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(54px,6.4vw,94px);
+      font-weight:400;
+      line-height:.82;
+      letter-spacing:-.012em;
+      text-transform:uppercase;
+      max-width:720px;
+    }
+    .project-desc{
+      color:var(--muted);
+      font-size:17px;
+      line-height:1.7;
+      max-width:600px;
+      margin-bottom:23px;
+    }
+    .project-stack{
+      display:flex;
+      flex-wrap:wrap;
+      gap:9px;
+      margin-bottom:25px;
+    }
+    .project-stack span{
+      border:1px solid var(--line);
+      border-radius:100px;
+      padding:8px 12px;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .project-link{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      font-size:13px;
+      font-weight:700;
+      border-bottom:1px solid var(--ink);
+      padding-bottom:6px;
+      transition:.25s;
+    }
+    .project-link:hover{color:var(--accent);border-color:var(--accent)}
+    .project.reverse .project-info{
+      grid-template-columns:.85fr 1.15fr;
+    }
+    .project.reverse .project-title{order:2}
+    .project.reverse .project-details{order:1}
+
+    /* PIPELINE */
+    #pipeline{
+      padding:155px 0;
+      background:var(--paper);
+      border-top:1px solid var(--line);
+    }
+    .pipeline-title{
+      max-width:900px;
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(45px,6vw,82px);
+      font-weight:700;
+      line-height:.9;
+      letter-spacing:-.065em;
+      text-transform:uppercase;
+      margin-bottom:28px;
+    }
+    .pipeline-copy{
+      max-width:560px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.8;
+      margin-bottom:70px;
+    }
+    .pipeline-flow{max-width:900px}
+    .pipeline-step{
+      display:grid;
+      grid-template-columns:70px 1fr auto;
+      gap:25px;
+      align-items:center;
+      border-top:1px solid var(--line);
+      padding:25px 0;
+    }
+    .pipeline-step:last-child{border-bottom:1px solid var(--line)}
+    .step-num{
+      color:var(--accent);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.1em;
+    }
+    .step-name{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:19px;
+      font-weight:600;
+      letter-spacing:-.025em;
+    }
+    .step-detail{
+      color:var(--muted);
+      font-size:11px;
+      text-align:right;
+    }
+
+    /* EXPERIENCE */
+    #experience{
+      padding:150px 0;
+      border-top:1px solid var(--line);
+    }
+    .experience-heading{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(55px,8vw,110px);
+      font-weight:700;
+      line-height:.82;
+      letter-spacing:-.075em;
+      text-transform:uppercase;
+      margin-bottom:85px;
+    }
+    .exp-item{
+      display:grid;
+      grid-template-columns:190px 1fr 70px;
+      gap:35px;
+      align-items:start;
+      padding:30px 0;
+      border-top:1px solid var(--line);
+    }
+    .exp-item:last-child{border-bottom:1px solid var(--line)}
+    .exp-date{
+      color:var(--muted);
+      font-size:10.5px;
+      line-height:1.6;
+    }
+    .exp-role{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:21px;
+      font-weight:600;
+      margin-bottom:5px;
+      letter-spacing:-.03em;
+    }
+    .exp-org{
+      font-size:13px;
+      font-weight:500;
+      margin-bottom:9px;
+    }
+    .exp-desc{
+      max-width:650px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.7;
+    }
+    .exp-arrow{
+      text-align:right;
+      font-size:18px;
+    }
+    .cert-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:45px;
+    }
+    .cert-chip{
+      border:1px solid var(--line);
+      border-radius:100px;
+      padding:7px 11px;
+      color:var(--muted);
+      font-size:10px;
+      background:var(--paper);
+    }
+
+    /* STATS */
+    #stats{
+      padding:100px 0;
+      background:var(--ink);
+      color:var(--paper);
+    }
+    .stats-top{
+      display:flex;
+      justify-content:space-between;
+      color:#8E8980;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      margin-bottom:65px;
+    }
+    .stats-grid{
+      display:grid;
+      grid-template-columns:repeat(6,1fr);
+      gap:25px;
+    }
+    .stat-num{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(36px,4.4vw,64px);
+      line-height:.9;
+      font-weight:700;
+      letter-spacing:-.06em;
+    }
+    .stat-num .accent{color:var(--accent)}
+    .stat-label{
+      color:#8E8980;
+      font-size:9.5px;
+      line-height:1.5;
+      margin-top:12px;
+      max-width:120px;
+    }
+
+    /* CONTACT */
+    #contact{
+      padding:205px 0 125px;
+      text-align:center;
+      overflow:hidden;
+    }
+    .contact-kicker{
+      color:var(--accent);
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      margin-bottom:35px;
+    }
+    .contact-heading{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:clamp(72px,12vw,170px);
+      line-height:.78;
+      letter-spacing:-.035em;
+      text-transform:uppercase;
+      max-width:1250px;
+      margin:0 auto 65px;
+    }
+    .contact-heading span{color:var(--accent)}
+    .contact-email{
+      display:inline-block;
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(22px,3vw,38px);
+      font-weight:600;
+      letter-spacing:-.04em;
+      border-bottom:2px solid var(--ink);
+      padding-bottom:5px;
+      margin-bottom:40px;
+      transition:.3s;
+    }
+    .contact-email:hover{
+      color:var(--accent);
+      border-color:var(--accent);
+    }
+    .contact-links{
+      display:flex;
+      justify-content:center;
+      gap:30px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:600;
+    }
+    .contact-links a:hover{color:var(--accent)}
+
+    footer{
+      border-top:1px solid var(--line);
+      padding:25px 48px;
+      display:flex;
+      justify-content:space-between;
+      color:var(--muted);
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    footer a:hover{color:var(--accent)}
+
+    /* Loader safety: the portfolio must never remain on a black screen if an external animation library is slow/unavailable. */
+    .page-ready #page-loader{
+      transform:translateY(-100%);
+      transition:transform .45s cubic-bezier(.2,.75,.2,1);
+    }
+    .page-ready .hero-name em{transform:translateY(0)!important}
+    .page-ready .hero-photo-wrap{transform:translateY(0) scale(1)}
+    .page-ready .hero-photo{opacity:1!important}
+    .page-ready .hero-orbit{opacity:1!important}
+    .page-ready .hero-bottom > *{opacity:1!important;transform:none!important}
+
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        scroll-behavior:auto!important;
+      }
+      .hero-light-sweep{display:none}
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:1050px){
+      .nav-links,.availability{display:none}
+      header{grid-template-columns:1fr auto}
+      .menu-btn{display:block}
+      .hero-name{font-size:clamp(82px,15vw,170px)}
+      .hero-photo-stage{width:min(500px,52vw)}
+      .about-grid{gap:55px}
+      .stats-grid{grid-template-columns:repeat(3,1fr);row-gap:50px}
+    }
+
+    @media(max-width:760px){
+      body{cursor:auto}
+      #cursor-dot,#cursor-ring{display:none}
+      .wrap{padding:0 24px}
+      header{padding:17px 24px}
+      .talk{padding:9px 14px}
+
+      #home{
+        min-height:850px;
+        padding:100px 0 30px;
+      }
+      .hero-grid{
+        min-height:720px;
+      }
+      .hero-eyebrow,.hero-location{top:1%}
+      .hero-name{
+        top:8%;
+        font-size:clamp(72px,18vw,116px);
+      }
+      .hero-name .last{text-align:left}
+      .hero-name .first{text-align:right}
+      .hero-photo-stage{
+        width:min(325px,70vw);
+        height:445px;
+        bottom:82px;
+      }
+      .hero-bottom{
+        position:absolute;
+        grid-template-columns:1fr;
+        bottom:0;
+        gap:20px;
+      }
+      .hero-scroll{display:none}
+      .hero-socials{justify-content:flex-start}
+      .hero-role p{max-width:330px}
+      .hero-orbit{right:4%;top:43%;width:46px;height:46px}
+
+      #manifesto{padding:135px 0}
+      .manifesto-text{font-size:clamp(34px,9.5vw,58px)}
+
+      #about{padding:120px 0 140px}
+      .about-heading{
+        font-size:clamp(45px,13vw,72px);
+        margin-bottom:55px;
+      }
+      .about-grid{grid-template-columns:1fr;gap:50px}
+      .about-visual{max-width:430px}
+      .about-intro{font-size:24px}
+
+      #work{padding:120px 0 70px}
+      .work-heading{display:block;margin-bottom:65px}
+      .work-heading h2{font-size:clamp(56px,15vw,90px);margin-bottom:25px}
+      .project{margin-bottom:105px}
+      .project-media{height:auto;aspect-ratio:4/3;min-height:0}
+      .project-info,
+      .project.reverse .project-info{
+        grid-template-columns:1fr;
+        gap:20px;
+      }
+      .project.reverse .project-title,
+      .project.reverse .project-details{
+        order:initial;
+      }
+      .project-title{font-size:clamp(46px,13vw,72px);max-width:100%}
+      .project-desc{font-size:15px}
+      .project-stack span{font-size:10.5px}
+
+      #pipeline{padding:120px 0}
+      .pipeline-step{grid-template-columns:42px 1fr;gap:14px}
+      .step-detail{text-align:left;grid-column:2}
+      .step-name{font-size:17px}
+
+      #experience{padding:120px 0}
+      .experience-heading{font-size:clamp(56px,15vw,90px);margin-bottom:60px}
+      .exp-item{
+        grid-template-columns:1fr;
+        gap:10px;
+      }
+      .exp-arrow{display:none}
+
+      #stats{padding:80px 0}
+      .stats-grid{grid-template-columns:repeat(2,1fr);gap:45px 25px}
+
+      #contact{padding:145px 0 100px}
+      .contact-heading{font-size:clamp(70px,18vw,120px)}
+      footer{padding:22px 24px;gap:15px;flex-direction:column}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{
+        animation:none!important;
+        transition:none!important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="scroll-progress" id="scroll-progress"></div>
+  <div class="cursor-label" id="cursor-label">VIEW</div>
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <header id="site-header">
+    <a class="brand" href="#home">
+      <span class="brand-name">Uday Mahaal</span>
+      <span class="brand-role">AI / ML Engineer</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="nav-right">
+      <div class="availability">
+        <span class="live-dot"></span>
+        Available
+      </div>
+      <a class="talk" href="#contact">Let's Talk <span>↗</span></a>
+      <button class="menu-btn" id="menu-btn">Menu</button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="home">
+    <div class="wrap hero-grid">
+      <div class="hero-eyebrow">AI / ML Engineer · Developer</div>
+      <div class="hero-location">India · 2026</div>
+
+      <div class="hero-hud">
+        <div class="hud-top">
+          <span>UDAY.OS</span>
+          <span>ONLINE</span>
+        </div>
+        <div class="hud-line"><i></i></div>
+        <div class="hud-grid">
+          <span>BUILD</span><strong>INTELLIGENT</strong>
+          <span>MODE</span><strong>RAG / NLP</strong>
+          <span>STATUS</span><strong class="hud-live">● ACTIVE</strong>
+        </div>
+      </div>
+
+      <h1 class="hero-name">
+        <span class="first"><em>UDAY</em></span>
+        <span class="last"><em>MAHAAL</em></span>
+      </h1>
+
+      <div class="hero-photo-stage" id="hero-photo-stage">
+        <div class="hero-photo-wrap" id="hero-photo-wrap">
+          <img class="hero-photo" id="hero-photo" src="uday.png" alt="Uday Mahaal">
+          <span class="hero-light-sweep" aria-hidden="true"></span>
+          <span class="hero-glass" aria-hidden="true"></span>
+        </div>
+        <div class="hero-orbit"></div>
+      </div>
+
+      <div class="hero-bottom">
+        <div class="hero-role">
+          <h2>AI/ML Engineer &amp; Developer</h2>
+          <p>
+            Building intelligent systems across NLP, RAG, automation,
+            backend engineering and data-driven applications.
+          </p>
+        </div>
+
+        <div class="hero-scroll">
+          <span>Scroll to explore</span>
+          <span class="scroll-line"></span>
+        </div>
+
+        <div class="hero-socials">
+          <a href="https://github.com/UdayMahaal" target="_blank" rel="noopener">GitHub ↗</a>
+          <a href="#" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a href="https://leetcode.com/Uday_Mahaal12/" target="_blank" rel="noopener">LeetCode ↗</a>
+          <a href="mailto:udaymahaal@gmail.com">Email ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <div class="ticker-item">Artificial Intelligence <i></i> Machine Learning <i></i> NLP <i></i> RAG <i></i> Software Engineering <i></i></div>
+      <div class="ticker-item">Artificial Intelligence <i></i> Machine Learning <i></i> NLP <i></i> RAG <i></i> Software Engineering <i></i></div>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <section id="manifesto">
+    <div class="wrap">
+      <div class="manifesto-meta">
+        <span>01 / Perspective</span>
+        <span>Intelligence, engineered.</span>
+      </div>
+
+      <p class="manifesto-text" id="manifesto-text">
+        I don't just train models. I build systems that read documents,
+        understand context, and answer questions no keyword search ever could.
+      </p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="section-top">
+        <strong>About / What I Build</strong>
+        <span>02 — 06</span>
+      </div>
+
+      <h2 class="about-heading">
+        My work sits at the intersection of
+        <span class="muted-part">software engineering and applied AI.</span>
+      </h2>
+
+      <div class="about-grid">
+        <div class="about-visual">
+          <img src="uday_about.png" alt="Uday Mahaal AI avatar">
+          <span class="visual-number">02 / ABOUT</span>
+          <span class="visual-line"></span>
+        </div>
+
+        <div class="about-copy">
+          <div class="about-intro">
+            I build practical systems where software engineering meets intelligent automation.
+          </div>
+
+          <p>
+            I'm Uday Mahaal, a Computer Science and Engineering student specialising
+            in Artificial Intelligence and Machine Learning at Galgotias University.
+            I like building things that actually have to work on real data — legal PDFs
+            with messy formatting, customer reviews full of sarcasm, transactions that
+            need to balance to the rupee.
+          </p>
+
+          <p>
+            My projects span retrieval-augmented generation, NLP-based document analysis,
+            sentiment intelligence, and classic backend systems in Java and SQL. I care
+            about the full pipeline — from parsing raw input, to reasoning over it with
+            an LLM, to shipping a structured answer someone can actually use.
+          </p>
+
+          <div class="chip-row">
+            <span class="chip">Python</span>
+            <span class="chip">Java</span>
+            <span class="chip">SQL</span>
+            <span class="chip">Machine Learning</span>
+            <span class="chip">NLP</span>
+            <span class="chip">RAG</span>
+            <span class="chip">ChromaDB</span>
+            <span class="chip">spaCy</span>
+            <span class="chip">Groq API</span>
+            <span class="chip">Gemini AI</span>
+            <span class="chip">Apify</span>
+            <span class="chip">Supabase</span>
+            <span class="chip">MongoDB</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="wrap">
+      <div class="section-top">
+        <strong>Selected Work</strong>
+        <span>03 — 06</span>
+      </div>
+
+      <div class="work-heading">
+        <h2>Selected<br>Work</h2>
+        <p>
+          Three projects, three different problems — legal text,
+          customer sentiment, and a banking system.
+        </p>
+      </div>
+
+      <!-- PROJECT 01 -->
+      <article class="project">
+        <div class="project-media">
+          <img src="legal-analyzer.png" alt="Intelligent Legal Document Analyzer">
+          <div class="project-overlay"></div>
+          <span class="project-number">01</span>
+          <span class="project-type">AI · NLP · RAG · LEGALTECH</span>
+          <a class="project-explore" href="https://github.com/UdayMahaal/legal-document-analyzer" target="_blank" rel="noopener" aria-label="Open Legal Document Analyzer GitHub repository">
+            EXPLORE <span>↗</span>
+          </a>
+        </div>
+
+        <div class="project-info">
+          <h3 class="project-title">Intelligent Legal<br>Document Analyzer</h3>
+
+          <div class="project-details">
+            <p class="project-desc">
+              An AI-powered system that extracts clauses from legal documents,
+              flags and classifies risky terms, and answers natural-language
+              questions using semantic retrieval and RAG.
+            </p>
+
+            <div class="project-stack">
+              <span>Python</span>
+              <span>spaCy</span>
+              <span>ChromaDB</span>
+              <span>RAG</span>
+              <span>Groq API</span>
+            </div>
+
+            <a class="project-link" href="https://github.com/UdayMahaal/legal-document-analyzer" target="_blank" rel="noopener">
+              View repository ↗
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 02 -->
+      <article class="project reverse">
+        <div class="project-media">
+          <img src="reviewpulse-ai.png" alt="ReviewPulse-AI">
+          <div class="project-overlay"></div>
+          <span class="project-number">02</span>
+          <span class="project-type">AI · SENTIMENT · AUTOMATION</span>
+          <a class="project-explore" href="https://github.com/UdayMahaal/ReviewPulse-AI" target="_blank" rel="noopener" aria-label="Open ReviewPulse-AI GitHub repository">
+            EXPLORE <span>↗</span>
+          </a>
+        </div>
+
+        <div class="project-info">
+          <h3 class="project-title">ReviewPulse-AI</h3>
+
+          <div class="project-details">
+            <p class="project-desc">
+              An automated review intelligence platform where reviews are collected,
+              analysed for sentiment and recurring pain points, stored, and surfaced
+              through critical Telegram alerts.
+            </p>
+
+            <div class="project-stack">
+              <span>Python</span>
+              <span>Apify</span>
+              <span>Gemini AI</span>
+              <span>Supabase</span>
+              <span>Telegram</span>
+            </div>
+
+            <a class="project-link" href="https://github.com/UdayMahaal/ReviewPulse-AI" target="_blank" rel="noopener">
+              View repository ↗
+            </a>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 03 -->
+      <article class="project">
+        <div class="project-media">
+          <img src="atm-simulation.png" alt="ATM Simulation System">
+          <div class="project-overlay"></div>
+          <span class="project-number">03</span>
+          <span class="project-type">JAVA · OOP · SQL · BANKING</span>
+          <a class="project-explore" href="https://github.com/UdayMahaal/ATM-PROJECT" target="_blank" rel="noopener" aria-label="Open ATM Project GitHub repository">
+            EXPLORE <span>↗</span>
+          </a>
+        </div>
+
+        <div class="project-info">
+          <h3 class="project-title">ATM Simulation<br>System</h3>
+
+          <div class="project-details">
+            <p class="project-desc">
+              A Java-based ATM banking simulation implementing PIN verification,
+              balance inquiries, deposits, withdrawals and transaction history
+              to strengthen core OOP and SQL fundamentals.
+            </p>
+
+            <div class="project-stack">
+              <span>Core Java</span>
+              <span>OOP</span>
+              <span>SQL</span>
+            </div>
+
+            <a class="project-link" href="https://github.com/UdayMahaal/ATM-PROJECT" target="_blank" rel="noopener">
+              View repository ↗
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section id="pipeline">
+    <div class="wrap">
+      <div class="section-top">
+        <strong>AI Architecture</strong>
+        <span>04 — 06</span>
+      </div>
+
+      <h2 class="pipeline-title">From raw input<br>to useful intelligence.</h2>
+
+      <p class="pipeline-copy">
+        The AI projects follow a simple underlying shape: messy input becomes
+        structured information, semantic context, model reasoning and finally
+        an answer or action someone can use.
+      </p>
+
+      <div class="pipeline-flow">
+        <div class="pipeline-step">
+          <span class="step-num">01</span>
+          <div class="step-name">Raw Input</div>
+          <div class="step-detail">Legal PDFs · customer reviews</div>
+        </div>
+
+        <div class="pipeline-step">
+          <span class="step-num">02</span>
+          <div class="step-name">NLP Preprocessing</div>
+          <div class="step-detail">spaCy · extraction</div>
+        </div>
+
+        <div class="pipeline-step">
+          <span class="step-num">03</span>
+          <div class="step-name">Semantic Store</div>
+          <div class="step-detail">ChromaDB · vectors</div>
+        </div>
+
+        <div class="pipeline-step">
+          <span class="step-num">04</span>
+          <div class="step-name">LLM Reasoning</div>
+          <div class="step-detail">Groq API · Gemini AI</div>
+        </div>
+
+        <div class="pipeline-step">
+          <span class="step-num">05</span>
+          <div class="step-name">Delivery</div>
+          <div class="step-detail">Answers · Telegram alerts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-top">
+        <strong>Experience</strong>
+        <span>05 — 06</span>
+      </div>
+
+      <h2 class="experience-heading">Experience</h2>
+
+      <div class="exp-list">
+        <article class="exp-item">
+          <div class="exp-date">Jul – Sep 2025<br>Virtual</div>
+          <div>
+            <div class="exp-role">AI-ML Intern</div>
+            <div class="exp-org">AICTE – EduSkills National Internship Program</div>
+            <p class="exp-desc">
+              10-week program covering Python, machine learning fundamentals,
+              ML pipelines, data preprocessing and model evaluation.
+            </p>
+          </div>
+          <div class="exp-arrow">↗</div>
+        </article>
+
+        <article class="exp-item">
+          <div class="exp-date">Jul – Aug 2025<br>Remote</div>
+          <div>
+            <div class="exp-role">AI Intern</div>
+            <div class="exp-org">CodSo</div>
+            <p class="exp-desc">
+              Built AI applications including a chatbot and recommendation
+              system using Python and core machine-learning techniques.
+            </p>
+          </div>
+          <div class="exp-arrow">↗</div>
+        </article>
+
+        <article class="exp-item">
+          <div class="exp-date">Jun – Aug 2026<br>Virtual</div>
+          <div>
+            <div class="exp-role">SQL &amp; Database Management Systems</div>
+            <div class="exp-org">EduSkills Academy</div>
+            <p class="exp-desc">
+              Program covering relational database design, advanced SQL,
+              data aggregation and NoSQL with MongoDB.
+            </p>
+          </div>
+          <div class="exp-arrow">↗</div>
+        </article>
+      </div>
+
+      <div class="cert-row">
+        <span class="cert-chip">100 Days of Python Expert — GUVI (HCL), 2024</span>
+        <span class="cert-chip">AI-ML Virtual Internship — AICTE-EduSkills, 2025</span>
+        <span class="cert-chip">SQL &amp; DBMS — EduSkills Academy, 2026</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section id="stats">
+    <div class="wrap">
+      <div class="stats-top">
+        <span>Numbers</span>
+        <span>Built · Solved · Learned</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-num" data-count="3">0</div>
+          <div class="stat-label">Projects Shipped</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-num"><span data-count="240">0</span><span class="accent">+</span></div>
+          <div class="stat-label">LeetCode Problems Solved</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-num" data-count="3">0</div>
+          <div class="stat-label">Certifications Earned</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-num" data-count="2">0</div>
+          <div class="stat-label">AI Internships</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-num" data-count="3">0</div>
+          <div class="stat-label">Core Languages</div>
+        </div>
+
+        <div class="stat">
+          <div class="stat-num" data-decimal="7.97">0.00</div>
+          <div class="stat-label">Current CGPA / 10</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="contact-kicker">Have a problem worth solving?</div>
+
+      <h2 class="contact-heading">
+        Let's build<br>something <span>intelligent.</span>
+      </h2>
+
+      <a class="contact-email" href="mailto:udaymahaal@gmail.com">
+        udaymahaal@gmail.com
+      </a>
+
+      <div class="contact-links">
+        <a href="https://github.com/UdayMahaal" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="#" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://leetcode.com/Uday_Mahaal12/" target="_blank" rel="noopener">LeetCode ↗</a>
+        <a href="tel:+918218720923">+91 82187 20923 ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMAND PALETTE -->
+  <div class="command-backdrop" id="command-backdrop"></div>
+  <aside class="command-palette" id="command-palette" aria-hidden="true">
+    <div class="command-head">
+      <span>QUICK NAVIGATION</span>
+      <button id="command-close" aria-label="Close command palette">ESC</button>
+    </div>
+    <div class="command-search">
+      <span>⌘</span>
+      <input id="command-input" type="text" placeholder="Jump to a section..." autocomplete="off">
+    </div>
+    <div class="command-items" id="command-items">
+      <a href="#home" data-command="home">01 / Home <span>↗</span></a>
+      <a href="#about" data-command="about">02 / About <span>↗</span></a>
+      <a href="#work" data-command="work">03 / Work <span>↗</span></a>
+      <a href="#pipeline" data-command="pipeline">04 / AI Architecture <span>↗</span></a>
+      <a href="#experience" data-command="experience">05 / Experience <span>↗</span></a>
+      <a href="#contact" data-command="contact">06 / Contact <span>↗</span></a>
+    </div>
+    <div class="command-foot">
+      <span>Press</span><kbd>K</kbd><span>anywhere to open</span>
+    </div>
+  </aside>
+
+  <footer>
+    <span>© 2026 Uday Mahaal</span>
+    <a href="#home">Back to top ↑</a>
+    <span>Built from scratch</span>
+  </footer>
+
+  <script>
+    // Always open the portfolio at the hero on a fresh page load.
+    // Anchor links such as #work/#about are preserved.
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.addEventListener('pageshow', function(){
+      if (!window.location.hash) window.scrollTo(0, 0);
+    });
+
+    // Independent 2-second failsafe. This works even if GSAP/CDN is unavailable.
+    window.setTimeout(function(){
+      document.body.classList.add('page-ready');
+    }, 2000);
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* NAV */
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 25);
+    }, {passive:true});
+
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      document.body.classList.toggle('menu-open', open);
+      menuBtn.textContent = open ? 'Close' : 'Menu';
+    });
+
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        document.body.classList.remove('menu-open');
+        menuBtn.textContent = 'Menu';
+      });
+    });
+    /* HERO ENTRANCE */
+    const hero = gsap.timeline({defaults:{ease:'power4.out'}});
+
+    hero.to('.hero-name .first em', {
+      y:'0%',
+      duration:1.0
+    })
+    .to('.hero-name .last em', {
+      y:'0%',
+      duration:1.0
+    }, '-=.78')
+    .to('.hero-photo', {
+      opacity:1,
+      y:0,
+      scale:1,
+      duration:1.15,
+      ease:'power3.out'
+    }, '-=.55')
+    .to('.hero-orbit', {
+      opacity:1,
+      duration:.55
+    }, '-=.5')
+    .to('.hero-photo-stage', {
+      '--line-scale':1,
+      duration:.7,
+      ease:'power3.out'
+    }, '-=.45')
+    .from('.hero-bottom > *', {
+      opacity:0,
+      y:22,
+      duration:.75,
+      stagger:.1,
+      ease:'power2.out'
+    }, '-=.35');
+
+
+    /* SCROLL PROGRESS */
+    const scrollProgress = document.getElementById('scroll-progress');
+
+    function updateScrollProgress(){
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+      scrollProgress.style.width = progress + '%';
+    }
+    window.addEventListener('scroll', updateScrollProgress, {passive:true});
+    updateScrollProgress();
+
+    /* CURSOR */
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    window.addEventListener('mousemove', e => {
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top = my + 'px';
+    });
+
+    function cursorLoop(){
+      rx += (mx-rx)*.14;
+      ry += (my-ry)*.14;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(cursorLoop);
+    }
+    cursorLoop();
+
+    const cursorLabel = document.getElementById('cursor-label');
+
+    document.querySelectorAll('a,button,.project-media,.about-visual,.hero-photo-stage').forEach(el => {
+      el.addEventListener('mouseenter',()=>{
+        ring.classList.add('hover');
+
+        if(el.classList.contains('project-media')){
+          cursorLabel.textContent='VIEW';
+          cursorLabel.classList.add('show');
+        }else if(el.classList.contains('hero-photo-stage')){
+          cursorLabel.textContent='ME';
+          cursorLabel.classList.add('show');
+        }
+      });
+      el.addEventListener('mouseleave',()=>{
+        ring.classList.remove('hover');
+        cursorLabel.classList.remove('show');
+      });
+    });
+
+    window.addEventListener('mousemove', e=>{
+      cursorLabel.style.left=e.clientX+'px';
+      cursorLabel.style.top=e.clientY+'px';
+    });
+
+    /* HERO LIVING / PARALLAX EFFECT */
+    const photoStage = document.getElementById('hero-photo-stage');
+    const photo = document.getElementById('hero-photo');
+
+    if(window.matchMedia('(pointer:fine)').matches){
+      photoStage.addEventListener('mousemove', e => {
+        const r = photoStage.getBoundingClientRect();
+        const x = (e.clientX-r.left)/r.width-.5;
+        const y = (e.clientY-r.top)/r.height-.5;
+
+        gsap.to(photo, {
+          x:x*14,
+          y:y*8,
+          rotateY:x*4,
+          rotateX:-y*3,
+          duration:.65,
+          ease:'power3.out',
+          transformPerspective:1000
+        });
+      });
+
+      photoStage.addEventListener('mouseleave', () => {
+        gsap.to(photo,{
+          x:0,y:0,rotateY:0,rotateX:0,
+          duration:.9,
+          ease:'power3.out'
+        });
+      });
+    }
+
+    /* SUBTLE HERO BREATHING */
+    gsap.to(photo, {
+      y:'-=5',
+      duration:2.8,
+      repeat:-1,
+      yoyo:true,
+      ease:'sine.inOut',
+      delay:1.8
+    });
+
+    /* MANIFESTO WORD REVEAL */
+    const manifesto = document.getElementById('manifesto-text');
+    const words = manifesto.textContent.trim().split(/\s+/);
+
+    manifesto.innerHTML = words.map(word => {
+      const clean = word.replace(/[.,]/g,'').toLowerCase();
+      const accent = ['models','context','could'].includes(clean);
+      return `<span class="word ${accent ? 'accent':''}">${word}</span>`;
+    }).join(' ');
+
+    gsap.to('#manifesto-text .word',{
+      opacity:1,
+      y:0,
+      stagger:.055,
+      ease:'none',
+      scrollTrigger:{
+        trigger:'#manifesto',
+        start:'top 72%',
+        end:'bottom 58%',
+        scrub:.8
+      }
+    });
+
+    /* SECTION REVEALS */
+    gsap.from('.about-heading',{
+      opacity:0,
+      y:50,
+      duration:1,
+      ease:'power3.out',
+      scrollTrigger:{trigger:'#about',start:'top 78%'}
+    });
+
+    gsap.from('.about-visual',{
+      opacity:0,
+      x:-35,
+      scale:.97,
+      duration:1.1,
+      ease:'power3.out',
+      scrollTrigger:{trigger:'.about-grid',start:'top 82%'}
+    });
+
+    gsap.from('.about-copy',{
+      opacity:0,
+      x:35,
+      duration:1,
+      delay:.12,
+      ease:'power3.out',
+      scrollTrigger:{trigger:'.about-grid',start:'top 82%'}
+    });
+
+    gsap.utils.toArray('.project').forEach((project,index)=>{
+      gsap.from(project.querySelector('.project-media'),{
+        opacity:0,
+        y:55,
+        duration:1,
+        ease:'power3.out',
+        scrollTrigger:{
+          trigger:project,
+          start:'top 82%'
+        }
+      });
+
+      gsap.from(project.querySelector('.project-info'),{
+        opacity:0,
+        y:30,
+        duration:.9,
+        delay:.1,
+        ease:'power2.out',
+        scrollTrigger:{
+          trigger:project,
+          start:'top 68%'
+        }
+      });
+    });
+
+    gsap.from('.pipeline-step',{
+      opacity:0,
+      x:-25,
+      stagger:.1,
+      duration:.7,
+      ease:'power2.out',
+      scrollTrigger:{
+        trigger:'.pipeline-flow',
+        start:'top 78%'
+      }
+    });
+
+    gsap.from('.exp-item',{
+      opacity:0,
+      y:25,
+      stagger:.12,
+      duration:.75,
+      ease:'power2.out',
+      scrollTrigger:{
+        trigger:'.exp-list',
+        start:'top 80%'
+      }
+    });
+
+    gsap.from('.contact-heading',{
+      opacity:0,
+      y:55,
+      duration:1.1,
+      ease:'power3.out',
+      scrollTrigger:{
+        trigger:'#contact',
+        start:'top 75%'
+      }
+    });
+
+    /* HERO — subtle camera movement + breathing + scroll depth. Keep it human, not cartoonish. */
+    const heroStage = document.getElementById('hero-photo-stage');
+    const heroWrap = document.getElementById('hero-photo-wrap');
+    const heroPhoto = document.getElementById('hero-photo');
+
+    if(heroStage && heroWrap && heroPhoto && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      // Let the existing page-ready state reveal the portrait first, then begin the natural motion.
+      gsap.delayedCall(2.05,()=>{
+        gsap.fromTo(heroWrap,
+          {y:35, scale:.96},
+          {y:0, scale:1, duration:1.15, ease:'power3.out'}
+        );
+      });
+
+      const idle = gsap.timeline({
+        repeat:-1,
+        yoyo:true,
+        paused:true,
+        defaults:{ease:'sine.inOut'}
+      });
+      idle.to(heroWrap,{y:-5, scale:1.008, duration:3.6})
+          .to(heroWrap,{y:0, scale:1, duration:3.6});
+      gsap.delayedCall(3.2,()=>idle.play());
+
+      if(window.matchMedia('(pointer:fine)').matches){
+        heroStage.addEventListener('mousemove', e=>{
+          const r=heroStage.getBoundingClientRect();
+          const x=(e.clientX-r.left)/r.width-.5;
+          const y=(e.clientY-r.top)/r.height-.5;
+
+          gsap.to(heroPhoto,{
+            rotationY:x*3.2,
+            rotationX:-y*2.2,
+            x:x*5,
+            y:y*3,
+            duration:.9,
+            ease:'power3.out',
+            overwrite:'auto'
+          });
+        });
+
+        heroStage.addEventListener('mouseleave',()=>{
+          gsap.to(heroPhoto,{
+            rotationY:0,
+            rotationX:0,
+            x:0,
+            y:0,
+            duration:1.2,
+            ease:'power3.out'
+          });
+        });
+      }
+
+      ScrollTrigger.create({
+        trigger:'#home',
+        start:'top top',
+        end:'bottom top',
+        scrub:1.2,
+        onUpdate:self=>{
+          const p=self.progress;
+          gsap.to(heroWrap,{
+            y:-p*34,
+            scale:1-p*.035,
+            duration:.25,
+            overwrite:'auto',
+            ease:'none'
+          });
+          gsap.to(heroPhoto,{
+            rotationX:-p*1.8,
+            duration:.25,
+            overwrite:'auto',
+            ease:'none'
+          });
+        }
+      });
+    }
+
+    /* PROJECT MOUSE PARALLAX */
+    if(window.matchMedia('(pointer:fine)').matches){
+      document.querySelectorAll('.project-media').forEach(media=>{
+        const image = media.querySelector('img');
+
+        media.addEventListener('mousemove', e=>{
+          const r = media.getBoundingClientRect();
+          const x = (e.clientX-r.left)/r.width-.5;
+          const y = (e.clientY-r.top)/r.height-.5;
+
+          gsap.to(image,{
+            x:x*10,
+            y:y*8,
+            duration:.65,
+            ease:'power3.out'
+          });
+        });
+
+        media.addEventListener('mouseleave',()=>{
+          gsap.to(image,{
+            x:0,y:0,
+            duration:.8,
+            ease:'power3.out'
+          });
+        });
+      });
+    }
+
+    /* STATS */
+    document.querySelectorAll('[data-count]').forEach(el=>{
+      const target = parseInt(el.dataset.count,10);
+
+      ScrollTrigger.create({
+        trigger:el,
+        start:'top 88%',
+        once:true,
+        onEnter:()=>{
+          gsap.to(el,{
+            textContent:target,
+            duration:1.4,
+            ease:'power1.out',
+            snap:{textContent:1}
+          });
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-decimal]').forEach(el=>{
+      const target = parseFloat(el.dataset.decimal);
+      const obj = {value:0};
+
+      ScrollTrigger.create({
+        trigger:el,
+        start:'top 88%',
+        once:true,
+        onEnter:()=>{
+          gsap.to(obj,{
+            value:target,
+            duration:1.5,
+            ease:'power1.out',
+            onUpdate:()=>el.textContent=obj.value.toFixed(2)
+          });
+        }
+      });
+    });
+
+
+    /* MAGNETIC BUTTONS */
+    if(window.matchMedia('(pointer:fine)').matches){
+      document.querySelectorAll('.talk,.project-link,.contact-email').forEach(el=>{
+        el.addEventListener('mousemove', e=>{
+          const r=el.getBoundingClientRect();
+          const x=(e.clientX-r.left-r.width/2)*.12;
+          const y=(e.clientY-r.top-r.height/2)*.12;
+          gsap.to(el,{x,y,duration:.35,ease:'power3.out'});
+        });
+        el.addEventListener('mouseleave',()=>{
+          gsap.to(el,{x:0,y:0,duration:.5,ease:'elastic.out(1,.45)'});
+        });
+      });
+    }
+
+    /* COMMAND PALETTE — press K or Cmd/Ctrl + K */
+    const commandPalette = document.getElementById('command-palette');
+    const commandBackdrop = document.getElementById('command-backdrop');
+    const commandInput = document.getElementById('command-input');
+    const commandClose = document.getElementById('command-close');
+    const commandItems = [...document.querySelectorAll('#command-items a')];
+
+    function openCommandPalette(){
+      commandPalette.classList.add('open');
+      commandBackdrop.classList.add('open');
+      commandPalette.setAttribute('aria-hidden','false');
+      document.body.classList.add('menu-open');
+      setTimeout(()=>commandInput.focus(),120);
+    }
+
+    function closeCommandPalette(){
+      commandPalette.classList.remove('open');
+      commandBackdrop.classList.remove('open');
+      commandPalette.setAttribute('aria-hidden','true');
+      document.body.classList.remove('menu-open');
+      commandInput.value='';
+      commandItems.forEach(item=>item.style.display='flex');
+    }
+
+    document.addEventListener('keydown', e=>{
+      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase()==='k'){
+        e.preventDefault();
+        commandPalette.classList.contains('open') ? closeCommandPalette() : openCommandPalette();
+      }else if(!e.ctrlKey && !e.metaKey && e.key.toLowerCase()==='k' &&
+               document.activeElement.tagName !== 'INPUT' &&
+               document.activeElement.tagName !== 'TEXTAREA'){
+        e.preventDefault();
+        openCommandPalette();
+      }else if(e.key==='Escape' && commandPalette.classList.contains('open')){
+        closeCommandPalette();
+      }
+    });
+
+    commandClose.addEventListener('click',closeCommandPalette);
+    commandBackdrop.addEventListener('click',closeCommandPalette);
+
+    commandInput.addEventListener('input',()=>{
+      const query=commandInput.value.toLowerCase().trim();
+      commandItems.forEach(item=>{
+        item.style.display=item.textContent.toLowerCase().includes(query) ? 'flex' : 'none';
+      });
+    });
+
+    commandItems.forEach(item=>{
+      item.addEventListener('click',()=>{
+        closeCommandPalette();
+      });
+    });
+
+    /* REFRESH AFTER ALL IMAGES ARE READY */
+    window.addEventListener('load',()=>{
+      ScrollTrigger.refresh();
+    });
+  </script>
+</body>
+</html>
