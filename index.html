@@ -1324,177 +1324,37 @@
       .hero-light-sweep{display:none}
     }
 
-    /* MOBILE HERO REDESIGN — keeps the editorial desktop layout, but gives phones a dedicated composition. */
-    @media(max-width:760px){
-      header{
-        padding:14px 18px;
-        min-height:72px;
-        gap:12px;
-      }
-      .brand-name{font-size:14px}
-      .brand-role{font-size:8px;letter-spacing:.11em}
-      .nav-right{gap:10px}
-      .talk{padding:9px 12px;font-size:10px;white-space:nowrap}
-      .menu-btn{font-size:13px;padding:6px 0}
-
-      #home{
-        min-height:0;
-        height:auto;
-        padding:105px 0 34px;
-        overflow:hidden;
-      }
-      .hero-grid{
-        min-height:0;
-        display:flex;
-        flex-direction:column;
-        justify-content:flex-start;
-        align-items:stretch;
-      }
-      .hero-eyebrow,.hero-location{
-        position:static;
-        display:none;
-      }
-      .hero-hud{
-        display:none;
-      }
-      .hero-name{
-        position:static;
-        width:100%;
-        display:flex;
-        flex-direction:column;
-        align-items:center;
-        justify-content:center;
-        gap:0;
-        font-size:clamp(68px,20vw,92px);
-        line-height:.78;
-        letter-spacing:-.015em;
-        white-space:normal;
-        margin:0 auto 24px;
-      }
-      .hero-name span{
-        width:100%;
-        text-align:center!important;
-        overflow:visible;
-      }
-      .hero-name em{
-        transform:none!important;
-      }
-      .hero-name .first,.hero-name .last{
-        text-align:center;
-        margin:0;
-      }
-
-      .hero-photo-stage{
-        position:relative;
-        left:auto;
-        bottom:auto;
-        transform:none!important;
-        width:100%;
-        height:clamp(270px,76vw,340px);
-        margin:0 auto 16px;
-        display:flex;
-        align-items:flex-end;
-        justify-content:center;
-        overflow:visible;
-      }
-      .hero-photo-stage::before{
-        width:76%;
-        bottom:4%;
-      }
-      .hero-photo-stage::after{
-        left:10%;
-        right:10%;
-        bottom:0;
-      }
-      .hero-photo-wrap{
-        width:100%;
-        height:100%;
-        transform:none!important;
-      }
-      .hero-photo{
-        width:100%;
-        height:100%;
-        object-fit:contain;
-        object-position:center bottom;
-      }
-      .hero-light-sweep,.hero-glass{display:none}
-      .hero-orbit{
-        width:44px;
-        height:44px;
-        right:3%;
-        top:22%;
-      }
-
-      .hero-bottom{
-        position:static;
-        display:flex;
-        flex-direction:column;
-        align-items:stretch;
-        gap:18px;
-        width:100%;
-      }
-      .hero-role h2{
-        font-size:21px;
-        line-height:1.12;
-        margin-bottom:8px;
-      }
-      .hero-role p{
-        max-width:none;
-        font-size:13px;
-        line-height:1.6;
-      }
-      .hero-scroll{display:none}
-      .hero-socials{
-        display:flex;
-        justify-content:flex-start;
-        gap:10px 18px;
-        padding-top:2px;
-        flex-wrap:wrap;
-        font-size:11px;
-      }
-      .hero-socials a{
-        white-space:nowrap;
-      }
-
-      .ticker{margin-top:0}
-
-      /* Keep all following sections comfortably inside the phone viewport. */
-      .wrap{padding-left:20px;padding-right:20px}
-      #manifesto{padding:100px 0}
-      #about{padding:95px 0 110px}
-      #work{padding:95px 0 55px}
-      #experience{padding-top:95px}
-      #contact{padding-top:95px}
-    }
-
-
-    /* RESPONSIVE SYSTEM — desktop first, then tablet and phone-specific composition */
-    @media (max-width: 1100px){
+    /* RESPONSIVE SYSTEM — one clean breakpoint system for desktop, tablet and phones */
+    @media (max-width:1100px){
       .wrap{padding-left:32px;padding-right:32px}
       header{padding-left:32px;padding-right:32px}
       .nav-links{gap:26px}
-      .hero-name{font-size:clamp(88px,13.5vw,160px)}
-      .hero-photo-stage{width:min(780px,72vw);height:min(560px,64vh)}
+      .hero-name{font-size:clamp(82px,13vw,150px)}
+      .hero-photo-stage{width:min(780px,74vw);height:min(560px,64vh)}
       .hero-hud{right:0;top:22%}
       .about-grid{grid-template-columns:minmax(280px,.9fr) minmax(320px,1.1fr);gap:55px}
       .stats-grid{grid-template-columns:repeat(3,1fr);row-gap:45px}
     }
 
-    @media (max-width: 820px){
-      body{cursor:auto}
+    /* TABLET + MOBILE */
+    @media (max-width:820px){
+      html{scroll-padding-top:78px}
+      body{cursor:auto;overflow-x:hidden}
       #cursor-dot,#cursor-ring{display:none}
-      .wrap{padding-left:24px;padding-right:24px}
+
+      .wrap{width:100%;padding-left:24px;padding-right:24px}
       header{
         padding:14px 24px;
         min-height:70px;
         grid-template-columns:1fr auto;
+        gap:14px;
       }
       .nav-links,.availability{display:none}
-      .menu-btn{display:block;font-size:13px;padding:6px 0}
       .nav-right{gap:14px}
       .talk{padding:10px 14px;font-size:10px;white-space:nowrap}
+      .menu-btn{display:block;font-family:'Bebas Neue',sans-serif;font-size:14px;padding:6px 0}
 
-      /* Phone/tablet hero becomes a normal document flow instead of overlapping absolute layers. */
+      /* Dedicated document-flow hero: nothing overlaps on touch devices. */
       #home{
         min-height:0;
         height:auto;
@@ -1503,6 +1363,7 @@
       }
       .hero-grid{
         min-height:0;
+        width:100%;
         display:flex;
         flex-direction:column;
         justify-content:flex-start;
@@ -1512,13 +1373,14 @@
 
       .hero-name{
         position:static;
+        z-index:7;
         width:100%;
         display:flex;
         flex-direction:column;
         align-items:center;
         justify-content:center;
         gap:0;
-        margin:0 auto 20px;
+        margin:0 auto 22px;
         font-size:clamp(68px,17vw,112px);
         line-height:.78;
         letter-spacing:-.015em;
@@ -1526,6 +1388,7 @@
       }
       .hero-name span{
         width:100%;
+        max-width:100%;
         overflow:visible;
         text-align:center!important;
       }
@@ -1536,19 +1399,26 @@
         position:relative;
         left:auto;
         bottom:auto;
-        transform:none!important;
+        z-index:4;
         width:100%;
         height:clamp(300px,62vw,470px);
         margin:0 auto 22px;
         display:flex;
         align-items:flex-end;
         justify-content:center;
+        transform:none!important;
         overflow:visible;
       }
-      .hero-photo-wrap{width:100%;height:100%;transform:none!important}
-      .hero-photo{
+      .hero-photo-wrap{
         width:100%;
         height:100%;
+        transform:none!important;
+      }
+      .hero-photo{
+        display:block;
+        width:100%;
+        height:100%;
+        max-width:100%;
         object-fit:contain;
         object-position:center bottom;
       }
@@ -1559,23 +1429,24 @@
 
       .hero-bottom{
         position:static;
+        width:100%;
         display:flex;
         flex-direction:column;
         align-items:stretch;
         gap:20px;
-        width:100%;
       }
       .hero-role h2{font-size:22px;line-height:1.12;margin-bottom:9px}
       .hero-role p{max-width:none;font-size:14px;line-height:1.65}
       .hero-scroll{display:none}
       .hero-socials{
+        width:100%;
         justify-content:flex-start;
         gap:10px 18px;
         padding-top:2px;
         flex-wrap:wrap;
         font-size:11px;
       }
-      .hero-socials a{white-space:nowrap}
+      .hero-socials a{white-space:nowrap;min-height:24px;display:inline-flex;align-items:center}
 
       .ticker-item{padding:15px 22px;font-size:10px;gap:20px}
       #manifesto{padding:100px 0}
@@ -1604,22 +1475,31 @@
       #stats{padding:75px 0}
       .stats-grid{grid-template-columns:repeat(2,1fr);gap:40px 24px}
       #contact{padding:110px 0 85px}
-      .contact-heading{font-size:clamp(68px,17vw,120px)}
+      .contact-heading{font-size:clamp(68px,17vw,120px);word-break:normal}
       footer{padding:22px 24px;gap:15px;flex-direction:column}
     }
 
-    @media (max-width: 520px){
+    /* STANDARD PHONES */
+    @media (max-width:520px){
       .wrap{padding-left:18px;padding-right:18px}
-      header{padding:12px 18px;min-height:66px}
-      .brand-name{font-size:14px}
-      .brand-role{font-size:7.5px;letter-spacing:.1em}
-      .nav-right{gap:10px}
+      header{padding:12px 18px;min-height:66px;gap:10px}
+      .brand{min-width:0}
+      .brand-name{font-size:14px;white-space:nowrap}
+      .brand-role{font-size:7.5px;letter-spacing:.1em;white-space:nowrap}
+      .nav-right{gap:9px}
       .talk{padding:9px 11px;font-size:9px}
       .menu-btn{font-size:12px}
 
       #home{padding:94px 0 34px}
-      .hero-name{font-size:clamp(58px,18.5vw,88px);margin-bottom:16px}
-      .hero-photo-stage{height:clamp(260px,78vw,330px);margin-bottom:18px}
+      .hero-name{
+        font-size:clamp(56px,18.5vw,88px);
+        margin-bottom:16px;
+      }
+      .hero-photo-stage{
+        width:100%;
+        height:clamp(255px,78vw,340px);
+        margin-bottom:18px;
+      }
       .hero-photo-stage::before{width:78%}
       .hero-photo-stage::after{left:7%;right:7%}
       .hero-orbit{width:42px;height:42px;right:1%;top:17%}
@@ -1655,24 +1535,41 @@
       #stats{padding:65px 0}
       .stats-grid{grid-template-columns:1fr 1fr;gap:34px 16px}
       #contact{padding:90px 0 75px}
-      .contact-heading{font-size:clamp(58px,18vw,90px)}
+      .contact-heading{font-size:clamp(56px,18vw,90px)}
       footer{padding:20px 18px}
     }
 
-    @media (max-width: 370px){
+    /* VERY SMALL PHONES */
+    @media (max-width:370px){
       .wrap{padding-left:15px;padding-right:15px}
       header{padding-left:15px;padding-right:15px}
-      .brand-role{font-size:7px}
+      .brand-name{font-size:13px}
+      .brand-role{font-size:6.8px}
       .talk{padding:8px 9px;font-size:8.5px}
       .menu-btn{font-size:11px}
-      .hero-name{font-size:56px}
-      .hero-photo-stage{height:255px}
+      #home{padding-top:88px}
+      .hero-name{font-size:54px;margin-bottom:14px}
+      .hero-photo-stage{height:245px}
+      .hero-role h2{font-size:18px}
+      .hero-role p{font-size:12px}
       .hero-socials{gap:8px 11px;font-size:9.5px}
       .stats-grid{grid-template-columns:1fr}
     }
+
+    /* MOBILE LANDSCAPE — prevent the hero from becoming excessively tall */
+    @media (max-width:900px) and (orientation:landscape) and (max-height:520px){
+      #home{padding-top:84px;padding-bottom:30px}
+      .hero-name{font-size:clamp(48px,10vw,78px);margin-bottom:12px}
+      .hero-photo-stage{height:clamp(240px,62vh,330px);margin-bottom:14px}
+      .hero-bottom{gap:14px}
+      .hero-role h2{font-size:18px}
+      .hero-role p{font-size:12px;line-height:1.5}
+      .hero-socials{font-size:10px}
+    }
+
     /* Final viewport safety */
     html,body{max-width:100%;overflow-x:hidden}
-    video{max-width:100%}
+    img,video,svg,canvas{max-width:100%}
     button,a{-webkit-tap-highlight-color:transparent}
 
     @media(prefers-reduced-motion:reduce){
