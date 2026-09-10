@@ -4,11 +4,60 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#F2F0EA">
+  <meta name="author" content="Uday Mahaal">
+  <meta name="description" content="Uday Mahaal is an AI/ML Engineer and Computer Science student building practical AI systems with Python, NLP, RAG, machine learning, automation, Java and SQL.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
+  <meta name="keywords" content="Uday Mahaal, AI ML Engineer, AI Engineer, Machine Learning Engineer, NLP, RAG, Python, Artificial Intelligence, Software Developer, Portfolio">
+  <link rel="canonical" href="https://udaymahaal.github.io/uday-portfolio/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Uday Mahaal Portfolio">
+  <meta property="og:title" content="Uday Mahaal — AI/ML Engineer & Developer">
+  <meta property="og:description" content="Portfolio of Uday Mahaal — AI/ML Engineer building practical systems across NLP, RAG, automation, backend engineering and data-driven applications.">
+  <meta property="og:url" content="https://udaymahaal.github.io/uday-portfolio/">
+  <meta property="og:image" content="https://udaymahaal.github.io/uday-portfolio/uday.png">
+  <meta property="og:image:alt" content="Uday Mahaal — AI/ML Engineer">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Uday Mahaal — AI/ML Engineer & Developer">
+  <meta name="twitter:description" content="Portfolio of Uday Mahaal — AI/ML Engineer building practical AI and software systems.">
+  <meta name="twitter:image" content="https://udaymahaal.github.io/uday-portfolio/uday.png">
+
   <title>Uday Mahaal — AI/ML Engineer & Developer</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Uday Mahaal",
+    "url": "https://udaymahaal.github.io/uday-portfolio/",
+    "jobTitle": "AI/ML Engineer & Developer",
+    "description": "AI/ML Engineer and Computer Science student building practical AI systems across NLP, RAG, automation, backend engineering and data-driven applications.",
+    "sameAs": [
+      "https://github.com/UdayMahaal",
+      "https://leetcode.com/Uday_Mahaal12/"
+    ],
+    "knowsAbout": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Natural Language Processing",
+      "Retrieval-Augmented Generation",
+      "Python",
+      "Java",
+      "SQL",
+      "Software Engineering"
+    ],
+    "affiliation": {
+      "@type": "CollegeOrUniversity",
+      "name": "Galgotias University"
+    }
+  }
+  </script>
 
   <style>
     :root{
@@ -549,7 +598,7 @@
     }
     .hero-name{
       position:absolute;
-      z-index:5;
+      z-index:2;
       top:8%;
       left:0;
       display:flex;
@@ -584,7 +633,7 @@
     }
     .hero-photo-stage{
       position:absolute;
-      z-index:3;
+      z-index:4;
       left:50%;
       bottom:-1px;
       width:min(500px,40vw);
@@ -596,6 +645,10 @@
       pointer-events:auto;
       opacity:1;
     }
+    /* HERO LAYERING */
+    .hero-name{pointer-events:none}
+    .hero-photo-stage{isolation:isolate}
+
     .hero-photo-stage::before{
       content:"";
       position:absolute;
@@ -1404,7 +1457,7 @@
       <span class="brand-role">AI / ML Engineer</span>
     </a>
 
-    <nav class="nav-links">
+    <nav class="nav-links" aria-label="Primary navigation">
       <a href="#work">Work</a>
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
@@ -1421,13 +1474,14 @@
     </div>
   </header>
 
-  <div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
     <a href="#work">Work</a>
     <a href="#about">About</a>
     <a href="#experience">Experience</a>
     <a href="#contact">Contact</a>
   </div>
 
+  <main>
   <!-- HERO -->
   <section id="home">
     <div class="wrap hero-grid">
@@ -1454,7 +1508,7 @@
 
       <div class="hero-photo-stage" id="hero-photo-stage">
         <div class="hero-photo-wrap" id="hero-photo-wrap">
-          <img class="hero-photo" id="hero-photo" src="uday.png" alt="Uday Mahaal">
+          <img class="hero-photo" id="hero-photo" src="uday.png" alt="Uday Mahaal — AI/ML Engineer" decoding="async">
           <span class="hero-light-sweep" aria-hidden="true"></span>
           <span class="hero-glass" aria-hidden="true"></span>
         </div>
@@ -1523,7 +1577,7 @@
 
       <div class="about-grid">
         <div class="about-visual">
-          <img src="uday_about.png" alt="Uday Mahaal AI avatar">
+          <img src="uday_about.png" alt="Uday Mahaal — AI/ML Engineer" loading="lazy" decoding="async">
           <span class="visual-number">02 / ABOUT</span>
           <span class="visual-line"></span>
         </div>
@@ -1587,7 +1641,7 @@
       <!-- PROJECT 01 -->
       <article class="project">
         <div class="project-media">
-          <img src="legal-analyzer.png" alt="Intelligent Legal Document Analyzer">
+          <img src="legal-analyzer.png" alt="Intelligent Legal Document Analyzer — AI, NLP and RAG project" loading="lazy" decoding="async">
           <div class="project-overlay"></div>
           <span class="project-number">01</span>
           <span class="project-type">AI · NLP · RAG · LEGALTECH</span>
@@ -1624,7 +1678,7 @@
       <!-- PROJECT 02 -->
       <article class="project reverse">
         <div class="project-media">
-          <img src="reviewpulse-ai.png" alt="ReviewPulse-AI">
+          <img src="reviewpulse-ai.png" alt="ReviewPulse-AI — automated customer review intelligence platform" loading="lazy" decoding="async">
           <div class="project-overlay"></div>
           <span class="project-number">02</span>
           <span class="project-type">AI · SENTIMENT · AUTOMATION</span>
@@ -1661,7 +1715,7 @@
       <!-- PROJECT 03 -->
       <article class="project">
         <div class="project-media">
-          <img src="atm-simulation.png" alt="ATM Simulation System">
+          <img src="atm-simulation.png" alt="ATM Simulation System — Java, OOP and SQL project" loading="lazy" decoding="async">
           <div class="project-overlay"></div>
           <span class="project-number">03</span>
           <span class="project-type">JAVA · OOP · SQL · BANKING</span>
@@ -1891,6 +1945,8 @@
       <span>Press</span><kbd>K</kbd><span>anywhere to open</span>
     </div>
   </aside>
+
+  </main>
 
   <footer>
     <span>© 2026 Uday Mahaal</span>
