@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preload" as="video" href="hero-loop-transparent.webm" type="video/webm">
   <meta name="theme-color" content="#F2F0EA">
   <meta name="author" content="Uday Mahaal">
   <meta name="description" content="Uday Mahaal is an AI/ML Engineer and Computer Science student building practical AI systems with Python, NLP, RAG, machine learning, automation, Java and SQL.">
@@ -397,6 +398,15 @@
     }
 
     @media(max-width:760px){
+      .hero-photo-stage{
+        width:min(620px,112vw);
+        height:420px;
+        bottom:58px;
+      }
+      .hero-photo{
+        object-position:center bottom;
+      }
+
       .hero-hud{
         top:20%;
         right:0;
@@ -598,7 +608,7 @@
     }
     .hero-name{
       position:absolute;
-      z-index:2;
+      z-index:7;
       top:8%;
       left:0;
       display:flex;
@@ -635,9 +645,9 @@
       position:absolute;
       z-index:4;
       left:50%;
-      bottom:-1px;
-      width:min(500px,40vw);
-      height:min(650px,72vh);
+      bottom:-72px;
+      width:min(960px,76vw);
+      height:min(620px,69vh);
       transform:translateX(-50%);
       display:flex;
       align-items:flex-end;
@@ -646,7 +656,7 @@
       opacity:1;
     }
     /* HERO LAYERING */
-    .hero-name{pointer-events:none}
+    .hero-name{pointer-events:none;text-shadow:0 1px 0 rgba(242,240,234,.18)}
     .hero-photo-stage{isolation:isolate}
 
     .hero-photo-stage::before{
@@ -689,12 +699,14 @@
       height:100%;
       object-fit:contain;
       object-position:center bottom;
-      filter:contrast(1.035) saturate(.98);
+      filter:contrast(1.02) saturate(.98);
+      mix-blend-mode:normal;
       position:relative;
       transform:translate3d(0,0,0);
       opacity:0;
       will-change:transform,filter;
       backface-visibility:hidden;
+      display:block;
     }
     /* Natural-looking movement: light, depth and tiny camera drift rather than cartoon animation. */
     .hero-light-sweep{
@@ -1508,7 +1520,17 @@
 
       <div class="hero-photo-stage" id="hero-photo-stage">
         <div class="hero-photo-wrap" id="hero-photo-wrap">
-          <img class="hero-photo" id="hero-photo" src="uday.png" alt="Uday Mahaal — AI/ML Engineer" decoding="async">
+          <video
+            class="hero-photo"
+            id="hero-photo"
+            src="hero-loop-transparent.webm"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-label="Uday Mahaal working on an AI system"
+          ></video>
           <span class="hero-light-sweep" aria-hidden="true"></span>
           <span class="hero-glass" aria-hidden="true"></span>
         </div>
@@ -2452,9 +2474,12 @@
       });
     });
 
-    /* REFRESH AFTER ALL IMAGES ARE READY */
+    /* REFRESH AFTER HERO MEDIA IS READY */
     window.addEventListener('load',()=>{
       ScrollTrigger.refresh();
+      if(photo && photo.tagName === 'VIDEO'){
+        photo.play().catch(()=>{});
+      }
     });
   </script>
 </body>
